@@ -2,7 +2,7 @@
 
 const string inputFile = "input.txt";
 
-// var output = Day1.SolvePart1(File.ReadLines(inputFile));
-var output = Day1.SolvePart2(File.ReadLines(inputFile));
+// var output = Day2.SolvePart1(File.ReadLines(inputFile));
+var output = Day2.SolvePart2(File.ReadLines(inputFile));
 
 Console.WriteLine(output);
