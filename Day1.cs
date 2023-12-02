@@ -4,31 +4,24 @@ namespace AoC2023;
 
 public class Day1 : IDay<IEnumerable<string>, int>
 {
-    private static readonly List<string> _words = new()
-    {
-        "one",
-        "two",
-        "three",
-        "four",
-        "five",
-        "six",
-        "seven",
-        "eight",
-        "nine"
-    };
+    private static readonly List<string> _words =
+        new() { "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
 
     private static readonly int _minWordLength = _words.Min(w => w.Length);
 
     public static int SolvePart1(IEnumerable<string> input)
     {
-        return input.Aggregate(0, (sum, line) =>
-        {
-            var digits = line.Select(c => (int)char.GetNumericValue(c))
-                             .Where(n => n != -1)
-                             .ToList();
+        return input.Aggregate(
+            0,
+            (sum, line) =>
+            {
+                var digits = line.Select(c => (int)char.GetNumericValue(c))
+                    .Where(n => n != -1)
+                    .ToList();
 
-            return sum + digits.First() * 10 + digits.Last();
-        });
+                return sum + digits.First() * 10 + digits.Last();
+            }
+        );
     }
 
     public static int SolvePart2(IEnumerable<string> input)
@@ -52,10 +45,7 @@ public class Day1 : IDay<IEnumerable<string>, int>
                 }
                 else if (lineCopy.Length >= _minWordLength)
                 {
-                    var index = _words.FindIndex(w =>
-                            lineCopy
-                                .ToString()
-                                .StartsWith(w));
+                    var index = _words.FindIndex(w => lineCopy.ToString().StartsWith(w));
 
                     if (index != -1)
                     {
