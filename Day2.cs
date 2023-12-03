@@ -1,4 +1,4 @@
-using AoC2023;
+namespace AoC2023;
 
 public class Day2 : IDay<IEnumerable<string>, int>
 {
@@ -41,16 +41,18 @@ public class Day2 : IDay<IEnumerable<string>, int>
 
     public static int SolvePart2(IEnumerable<string> input)
     {
-        List<int> gamePowers = new();
+        List<int> gamePowers = [];
 
         foreach (var line in input)
         {
             var game = ParseGame(line);
 
-            var minCubesRequired = new Dictionary<string, int>();
-            minCubesRequired.Add("red", 0);
-            minCubesRequired.Add("blue", 0);
-            minCubesRequired.Add("green", 0);
+            var minCubesRequired = new Dictionary<string, int>
+            {
+                { "red", 0 },
+                { "blue", 0 },
+                { "green", 0 }
+            };
 
             foreach (var cubeResult in game.GetAllCubeResults())
             {
@@ -70,7 +72,7 @@ public class Day2 : IDay<IEnumerable<string>, int>
     private static CubeResult ParseCubeResult(string str)
     {
         var split = str.Trim().Split(' ');
-        var count = Int32.Parse(split[0].Trim());
+        var count = int.Parse(split[0].Trim());
         var type = split[1];
 
         return new CubeResult(count, type);
@@ -79,7 +81,7 @@ public class Day2 : IDay<IEnumerable<string>, int>
     private static Game ParseGame(string str)
     {
         var lineSplit = str.Split(':');
-        var gameId = Int32.Parse(lineSplit[0].Split(' ')[1]);
+        var gameId = int.Parse(lineSplit[0].Split(' ')[1]);
         var sets = lineSplit[1].Split(';');
 
         return new Game(gameId, GetSets(sets));

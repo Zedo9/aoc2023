@@ -5,7 +5,17 @@ namespace AoC2023;
 public class Day1 : IDay<IEnumerable<string>, int>
 {
     private static readonly List<string> _words =
-        new() { "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
+    [
+        "one",
+        "two",
+        "three",
+        "four",
+        "five",
+        "six",
+        "seven",
+        "eight",
+        "nine"
+    ];
 
     private static readonly int _minWordLength = _words.Min(w => w.Length);
 
