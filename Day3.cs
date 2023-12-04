@@ -106,7 +106,7 @@ public class Day3 : IDay<IEnumerable<string>, int>
                             List<int> existingPartNumbers;
                             var exists = starPositionToAdjacentPartNumbers.TryGetValue(
                                 pos,
-                                out existingPartNumbers
+                                out existingPartNumbers!
                             );
                             if (!exists)
                             {
