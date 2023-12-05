@@ -53,7 +53,7 @@ public class Day3 : IDay<IEnumerable<string>, int>
                     }
                     if (isPartNumber)
                     {
-                        partNumbers.Add(Int32.Parse(sb.ToString()));
+                        partNumbers.Add(int.Parse(sb.ToString()));
                     }
                     sb.Clear();
                 }
