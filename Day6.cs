@@ -36,12 +36,8 @@ public class Day6 : IDay<IEnumerable<string>, long>
     }
 
     private static IEnumerable<long> ParseLineP1(string str) =>
-        str.Split(':')[1]
-            .Trim()
-            .Split(" ")
-            .Where(s => !string.IsNullOrWhiteSpace(s))
-            .Select(s => long.Parse(s.Trim()));
+        str.Split(':')[1].Split(" ").Where(s => !string.IsNullOrWhiteSpace(s)).Select(long.Parse);
 
     private static long ParseLineP2(string str) =>
-        long.Parse(string.Join("", str.Split(':')[1].Trim().Where(s => s != ' ')));
+        long.Parse(string.Join("", str.Split(':')[1].Where(s => s != ' ')));
 }
