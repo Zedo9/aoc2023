@@ -50,11 +50,11 @@ public class Day5 : IDay<IEnumerable<string>, long>
     {
         var inputArr = input.ToArray();
 
-        List<List<MapEntry>> maps = new();
+        List<List<MapEntry>> maps = [];
         var seedRanges = inputArr[0].Split(": ")[1].Split(' ').Select(long.Parse);
-        var seeds = seedRanges
-            .Chunk(2)
-            .Select(pair => new LongRange(pair[1], pair[0] + pair[1] - 1));
+        var inputSeeds = new Stack<LongRange>(
+            seedRanges.Chunk(2).Select(pair => new LongRange(pair[0], pair[0] + pair[1]))
+        );
 
         for (int i = 2; i < inputArr.Length; i++)
         {
@@ -65,7 +65,7 @@ public class Day5 : IDay<IEnumerable<string>, long>
             }
             if (line.EndsWith(':'))
             {
-                maps.Add(new List<MapEntry>());
+                maps.Add([]);
                 continue;
             }
 
@@ -79,27 +79,48 @@ public class Day5 : IDay<IEnumerable<string>, long>
 
         foreach (var item in maps)
         {
-            Console.WriteLine(string.Join(',', item));
+            Stack<LongRange> newSeeds = [];
+            while (inputSeeds.Count != 0)
+            {
+                var sr = inputSeeds.Pop();
+                var finished = true;
+                foreach (var range in item)
+                {
+                    var leftOverlap = Math.Max(sr.Low, range.Source);
+                    var rightOverlap = Math.Min(sr.High, range.Source + range.Length);
+                    if (leftOverlap < rightOverlap)
+                    {
+                        newSeeds.Push(
+                            new LongRange(
+                                leftOverlap - range.Source + range.Destination,
+                                rightOverlap - range.Source + range.Destination
+                            )
+                        );
+                        if (leftOverlap > sr.Low)
+                        {
+                            inputSeeds.Push(new LongRange(sr.Low, leftOverlap));
+                        }
+                        if (sr.High > rightOverlap)
+                        {
+                            inputSeeds.Push(new LongRange(rightOverlap, sr.High));
+                        }
+                        finished = false;
+                        break;
+                    }
+                }
+                if (finished == true)
+                {
+                    newSeeds.Push(new LongRange(sr.Low, sr.High));
+                }
+            }
+            inputSeeds = newSeeds;
         }
-        return long.MinValue;
+        return inputSeeds.Min(r => r.Low);
     }
 
-    public record struct MapEntry(long Source, long Destination, long Length) { }
+    public record struct MapEntry(long Source, long Destination, long Length);
 
-    public record struct LongRange(long Min, long Max)
-    {
-        public static bool Contains(LongRange a, LongRange b) => a.Min <= b.Min && a.Max >= b.Max;
-
-        public static bool Overlaps(LongRange a, LongRange b, out LongRange intersection)
-        {
-            var check = a.Max >= b.Min && a.Min <= b.Max;
-            var limits = new[] { a.Min, a.Max, b.Min, b.Max }.Order().ToList();
-
-            intersection = check ? new LongRange(limits[1], limits[2]) : default;
-
-            return check;
-        }
-    }
+    public record struct LongRange(long Low, long High);
 
     public record struct MapRule(long Source, long Destination, long Count);
 
