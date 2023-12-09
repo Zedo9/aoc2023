@@ -84,12 +84,7 @@ public class Day8 : IDay<IEnumerable<string>, long>
             };
 
             jumps++;
-            patternPointer++;
-
-            if (patternPointer >= pattern.Length)
-            {
-                patternPointer = 0;
-            }
+            patternPointer = patternPointer + 1 >= pattern.Length ? 0 : patternPointer + 1;
         }
         return jumps;
     }
