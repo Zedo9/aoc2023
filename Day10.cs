@@ -1,8 +1,8 @@
 namespace AoC2023;
 
-public class Day10 : IDay<IEnumerable<string>, long>
+public class Day10 : IDay<IEnumerable<string>, int>
 {
-    public static long SolvePart1(IEnumerable<string> input)
+    public static int SolvePart1(IEnumerable<string> input)
     {
         string[] map = input.ToArray();
 
@@ -12,7 +12,7 @@ public class Day10 : IDay<IEnumerable<string>, long>
         return traversedTiles.Count / 2;
     }
 
-    public static long SolvePart2(IEnumerable<string> input)
+    public static int SolvePart2(IEnumerable<string> input)
     {
         string[] map = input.ToArray();
 
@@ -29,6 +29,7 @@ public class Day10 : IDay<IEnumerable<string>, long>
                 {
                     // -> |J.F---.7
                     // -> |.7|F---J
+                    // This doesn't work in all cases 🤔
                     if (map[i][j] is '|' or '7' or 'F')
                     {
                         enclosed = !enclosed;
