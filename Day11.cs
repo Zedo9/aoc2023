@@ -160,8 +160,6 @@ public class Day11 : IDay<IEnumerable<string>, long>
         var emptyRows = FindEmptyRows(universe);
         var emptyCols = FindEmptyCols(universe);
 
-        universe = ExpandUniverse(universe, emptyRows, emptyCols);
-
         var galaxies = FindGalaxies(universe);
 
         long total = 0;
