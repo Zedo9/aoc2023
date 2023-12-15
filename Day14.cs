@@ -105,30 +105,42 @@ public class Day14 : IDay<IEnumerable<string>, long>
             var cols = Tilt(Rotate(rows)); // -> cols
             rows = Rotate(cols);
 
+            // Console.WriteLine("After North");
+            // Print(rows);
+
             // West
             cols = Tilt(rows); // -> rows
             rows = cols;
 
+            // Console.WriteLine("After West");
+            // Print(rows);
+
             // South
-            cols = Tilt(Rotate(rows).Reverse().ToArray()); // -> reversed cols
-            rows = Rotate(cols.Reverse().ToArray());
+            cols = Tilt(Rotate(rows.Reverse().ToArray())); // -> reversed cols
+            rows = Rotate(cols).Reverse().ToArray();
+
+            // Console.WriteLine("After South");
+            // Print(rows);
 
             // East
-            cols = Tilt(rows.Reverse().ToArray()); // -> reversed row
-            rows = cols.Reverse().ToArray();
+            cols = Tilt(Rotate(cols.Reverse().ToArray()).Reverse().ToArray()); // -> reversed cols
+            rows = Rotate(Rotate(cols).Reverse().ToArray());
+
+            // Print(rows);
 
             var key = string.Join('\n', rows);
             if (cache.TryGetValue(key, out var cycleStart))
             {
                 var distanceFromStart = i - cycleStart;
                 var cycleCount = (iterationsCount - i) / distanceFromStart;
-                i += cycleCount * distanceFromStart;
+                i = i + (cycleCount * distanceFromStart);
             }
 
             cache[key] = i;
+            // Console.WriteLine(i);
+            // Print(rows);
         }
 
-        Print(rows);
         return CalculateLoad(rows, Rotate(rows));
     }
 }
