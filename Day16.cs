@@ -16,7 +16,7 @@ public class Day16 : IDay<IEnumerable<string>, long>
         {
             var ((currR, currC), dir) = queue.Dequeue();
 
-            if (IsOutsideGrid((currR, currC), grid, dir))
+            if (IsOutsideGrid((currR, currC), grid))
             {
                 continue;
             }
@@ -76,7 +76,7 @@ public class Day16 : IDay<IEnumerable<string>, long>
             (_, _) => throw new Exception($"OOPS: ({currR}, {currC}) : [{currTile}] : {dir}")
         };
 
-    public static bool IsOutsideGrid((int, int) pos, string[] grid, Direction direction)
+    public static bool IsOutsideGrid((int, int) pos, string[] grid)
     {
         var (r, c) = pos;
         var maxR = grid.Length - 1;
@@ -88,34 +88,18 @@ public class Day16 : IDay<IEnumerable<string>, long>
     {
         var grid = input.ToArray();
 
-        var max = 0;
-
+        var rowsToTry = Enumerable.Range(0, grid.Length);
+        var colsToTry = Enumerable.Range(0, grid[0].Length);
         var maxC = grid[0].Length - 1;
-        for (int r = 0; r < grid.Length; r++)
-        {
-            int[] list =
-            {
-                max,
-                GetEnergizedCount((r, 0), grid, Direction.Right),
-                GetEnergizedCount((r, maxC), grid, Direction.Left)
-            };
-
-            max = list.Max();
-        }
-
         var maxR = grid.Length - 1;
-        for (int c = 0; c < grid[0].Length; c++)
-        {
-            int[] list =
-            {
-                max,
-                GetEnergizedCount((0, c), grid, Direction.Bottom),
-                GetEnergizedCount((maxR, c), grid, Direction.Top)
-            };
+        IEnumerable<int> PossibleEnergizedCounts =
+        [
+            ..rowsToTry.Select((r) => GetEnergizedCount((r, 0), grid, Direction.Right)),
+            ..rowsToTry.Select((r) => GetEnergizedCount((r, maxC), grid, Direction.Left)),
+            ..colsToTry.Select((c) => GetEnergizedCount((0, c), grid, Direction.Bottom)),
+            ..colsToTry.Select((c) => GetEnergizedCount((maxR, c), grid, Direction.Top))
+        ];
 
-            max = list.Max();
-        }
-
-        return max;
+        return PossibleEnergizedCounts.Max();
     }
 }
