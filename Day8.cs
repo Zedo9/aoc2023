@@ -25,7 +25,7 @@ public class Day8 : IDay<IEnumerable<string>, long>
         BuildMapAndPattern(input, out map, out pattern, out nodesEndingWithA);
 
         // 🤔 For some reason, the input is cyclic, so this works
-        return LCM(
+        return Helpers.LCM(
             nodesEndingWithA
                 .Select(n => FindStepsRequired(n, node => node.EndsWith('Z'), map, pattern))
                 .ToArray()
@@ -87,33 +87,5 @@ public class Day8 : IDay<IEnumerable<string>, long>
             patternPointer = patternPointer + 1 >= pattern.Length ? 0 : patternPointer + 1;
         }
         return jumps;
-    }
-
-    private static long LCM(long[] numbers)
-    {
-        long result = numbers[0];
-
-        for (int i = 1; i < numbers.Length; i++)
-        {
-            result = LCM(result, numbers[i]);
-        }
-
-        return result;
-    }
-
-    private static long LCM(long a, long b)
-    {
-        return (a * b) / GCD(a, b);
-    }
-
-    private static long GCD(long a, long b)
-    {
-        while (b != 0)
-        {
-            var tmp = b;
-            b = a % b;
-            a = tmp;
-        }
-        return a;
     }
 }
